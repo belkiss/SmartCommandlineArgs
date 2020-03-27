@@ -3,8 +3,8 @@
                     xmlns:local="clr-namespace:SmartCmdArgs.View"
                     xmlns:vm="clr-namespace:SmartCmdArgs.ViewModel"
                     xmlns:c="clr-namespace:SmartCmdArgs.View.Converter"
-                    xmlns:vs="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.14.0"
-                    xmlns:imaging="clr-namespace:Microsoft.VisualStudio.Imaging;assembly=Microsoft.VisualStudio.Imaging"  
+                    xmlns:vs="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
+                    xmlns:imaging="clr-namespace:Microsoft.VisualStudio.Imaging;assembly=Microsoft.VisualStudio.Imaging"
                     xmlns:theming="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Imaging"
                     xmlns:utilities="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Utilities">
 
@@ -18,7 +18,7 @@
         <Setter Property="Background" Value="{DynamicResource {x:Static vs:TreeViewColors.BackgroundBrushKey}}"/>
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="FontFamily" Value="{Binding ItemsFontFamily}" />
-        
+
 
         <Setter Property="theming:ImageThemingUtilities.ImageBackgroundColor" Value="{Binding Background, RelativeSource={RelativeSource Self}, Converter={StaticResource BrushToColorConverter}}" />
     </Style>
@@ -95,12 +95,12 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        
+
                         <Border x:Name="ItemBorder"
-                                BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="{TemplateBinding BorderThickness}" 
-                                Background="{TemplateBinding Background}" 
-                                Padding="{TemplateBinding Padding}" 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}"
+                                Padding="{TemplateBinding Padding}"
                                 SnapsToDevicePixels="True"
                                 />
                         <Grid Name="ItemGrid" Margin="{Binding Level, RelativeSource={RelativeSource TemplatedParent}, Converter={c:TreeLevelMarginConverter Ident=8}}">
@@ -108,23 +108,23 @@
                                 <ColumnDefinition MinWidth="19" Width="Auto"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            
-                            <local:ToggleButtonEx x:Name="Expander" 
+
+                            <local:ToggleButtonEx x:Name="Expander"
                                             Grid.Column="0" Grid.Row="0"
                                             ClickMode="Press"
                                             IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
                                             Style="{StaticResource ExpandCollapseToggleStyle}"
                                             Margin="{Binding Level, RelativeSource={RelativeSource TemplatedParent}, Converter={c:TreeLevelMarginConverter Ident=-8}}"
                                             />
-                            <Border x:Name="HeaderBorder" 
-                                    Grid.Column="1" Grid.Row="0" 
+                            <Border x:Name="HeaderBorder"
+                                    Grid.Column="1" Grid.Row="0"
                                     SnapsToDevicePixels="true">
-                                
+
                                 <!-- Margin: Skip 1px bottom border -->
-                                <ContentPresenter x:Name="PART_Header" 
-                                                    ContentSource="Header" HorizontalAlignment="Stretch" 
-                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
-                                                    Margin="{TemplateBinding BorderThickness}"  
+                                <ContentPresenter x:Name="PART_Header"
+                                                    ContentSource="Header" HorizontalAlignment="Stretch"
+                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                    Margin="{TemplateBinding BorderThickness}"
                                                   />
                             </Border>
                         </Grid>
@@ -198,11 +198,11 @@
     </Style>
 
     <Style x:Key="ArgumentItemStyle" TargetType="TreeViewItem" BasedOn="{StaticResource ItemBaseStyle}">
-        <!--<Setter Property="Background" Value="SkyBlue" />-->    
+        <!--<Setter Property="Background" Value="SkyBlue" />-->
     </Style>
 
     <HierarchicalDataTemplate x:Key="ProjectDataTemplate" DataType="{x:Type vm:CmdProject}" ItemsSource="{Binding ItemsView}">
-        <local:ArgumentItemView DataContext="{Binding}" 
+        <local:ArgumentItemView DataContext="{Binding}"
                                 FontWeight="{Binding IsStartupProject, Converter={c:BooleanBoldFontConverter}}"/>
     </HierarchicalDataTemplate>
 
