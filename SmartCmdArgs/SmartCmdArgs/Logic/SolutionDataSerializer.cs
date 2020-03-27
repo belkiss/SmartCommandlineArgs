@@ -3,15 +3,12 @@ using Newtonsoft.Json.Linq;
 using SmartCmdArgs.Helper;
 using SmartCmdArgs.ViewModel;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace SmartCmdArgs.Logic
 {
-    class SolutionDataSerializer : DataSerializer
+	class SolutionDataSerializer : DataSerializer
     {
         public static SolutionDataJson Serialize(ToolWindowViewModel vm, Stream stream)
         {

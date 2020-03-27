@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
 
 namespace SmartCmdArgs.Helper
 {
-    static class TreeHelper
+	static class TreeHelper
     {
         public static T FindVisualChild<T>(DependencyObject obj) where T : DependencyObject
         {

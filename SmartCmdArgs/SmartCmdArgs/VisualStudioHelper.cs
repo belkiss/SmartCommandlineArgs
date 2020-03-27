@@ -3,12 +3,9 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using EnvDTE;
 using SmartCmdArgs.Helper;
 using System.Runtime.InteropServices;
@@ -16,7 +13,7 @@ using Task = System.Threading.Tasks.Task;
 
 namespace SmartCmdArgs
 {
-    class VisualStudioHelper : IVsUpdateSolutionEvents2, IVsSelectionEvents, IVsSolutionEvents, IVsSolutionEvents4
+	class VisualStudioHelper : IVsUpdateSolutionEvents2, IVsSelectionEvents, IVsSolutionEvents, IVsSolutionEvents4
     {
         /// <summary>
         /// Shortcut for Microsoft.VisualStudio.VSConstants.S_OK

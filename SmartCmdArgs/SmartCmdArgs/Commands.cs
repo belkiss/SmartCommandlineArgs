@@ -6,8 +6,6 @@
 
 using System;
 using System.ComponentModel.Design;
-using System.Globalization;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using SmartCmdArgs.Helper;
@@ -16,10 +14,10 @@ using Task = System.Threading.Tasks.Task;
 
 namespace SmartCmdArgs
 {
-    /// <summary>
-    /// Command handler
-    /// </summary>
-    internal sealed class Commands
+	/// <summary>
+	/// Command handler
+	/// </summary>
+	internal sealed class Commands
     {
 
         /// <summary>

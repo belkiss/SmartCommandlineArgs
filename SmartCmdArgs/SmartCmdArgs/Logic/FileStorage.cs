@@ -4,15 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmartCmdArgs.Logic
 {
-    /// <summary>
-    /// This class handles all the file related functionality
-    /// </summary>
-    class FileStorage
+	/// <summary>
+	/// This class handles all the file related functionality
+	/// </summary>
+	class FileStorage
     {
         private readonly CmdArgsPackage cmdPackage;
         private readonly VisualStudioHelper vsHelper;

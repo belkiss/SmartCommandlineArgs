@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using SmartCmdArgs.ViewModel;
 
 namespace SmartCmdArgs.Logic
 {
-    class DataSerializer
+	class DataSerializer
     {
         protected static List<CmdArgumentJson> TransformCmdList(ICollection<CmdBase> items)
         {

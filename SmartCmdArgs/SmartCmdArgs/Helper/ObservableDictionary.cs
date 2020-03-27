@@ -4,18 +4,15 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmartCmdArgs.Helper
 {
-    /// <summary>
-    /// Provides a dictionary for use with data binding.
-    /// </summary>
-    /// <typeparam name="TKey">Specifies the type of the keys in this collection.</typeparam>
-    /// <typeparam name="TValue">Specifies the type of the values in this collection.</typeparam>
-    [DebuggerDisplay("Count={Count}")]
+	/// <summary>
+	/// Provides a dictionary for use with data binding.
+	/// </summary>
+	/// <typeparam name="TKey">Specifies the type of the keys in this collection.</typeparam>
+	/// <typeparam name="TValue">Specifies the type of the values in this collection.</typeparam>
+	[DebuggerDisplay("Count={Count}")]
     public class ObservableDictionary<TKey, TValue> 
         : IDictionary<TKey, TValue>, INotifyCollectionChanged, INotifyPropertyChanged
     {

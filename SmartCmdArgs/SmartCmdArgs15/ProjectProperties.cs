@@ -1,15 +1,10 @@
 namespace SmartCmdArgs15
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.Composition;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Microsoft.VisualStudio.ProjectSystem;
-    using Microsoft.VisualStudio.ProjectSystem.Properties;
+	using System.ComponentModel.Composition;
+	using Microsoft.VisualStudio.ProjectSystem;
+	using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-    [Export]
+	[Export]
     internal partial class ProjectProperties : StronglyTypedPropertyAccess
     {
         /// <summary>

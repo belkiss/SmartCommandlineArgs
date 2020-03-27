@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.Imaging;
-using Microsoft.VisualStudio.Imaging.Interop;
 using SmartCmdArgs.Helper;
 using SmartCmdArgs.ViewModel;
 
 namespace SmartCmdArgs.View.Converter
 {
-    class ItemMonikerConverter : MultiConverterBase
+	class ItemMonikerConverter : MultiConverterBase
     {
         public override object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {

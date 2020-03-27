@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SmartCmdArgs.Helper;
@@ -11,7 +8,7 @@ using SmartCmdArgs.ViewModel;
 
 namespace SmartCmdArgs.Logic
 {
-    class ProjectDataSerializer : DataSerializer
+	class ProjectDataSerializer : DataSerializer
     {
         public static void Serialize(CmdProject prj, Stream stream)
         {

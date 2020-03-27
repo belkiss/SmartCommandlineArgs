@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmartCmdArgs.Helper
 {
-    public class ObservableCollectionEx<T> : ObservableCollection<T>
+	public class ObservableCollectionEx<T> : ObservableCollection<T>
          where T : INotifyPropertyChanged
     {
         private bool raiseEvents = true;

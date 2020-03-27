@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmartCmdArgs.View.Converter
 {
-    class NullToVisibilityConverter : ConverterBase
+	class NullToVisibilityConverter : ConverterBase
     {
         public NullToVisibilityConverter()
         { }

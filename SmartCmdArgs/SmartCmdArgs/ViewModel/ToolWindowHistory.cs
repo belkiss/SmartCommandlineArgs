@@ -2,13 +2,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmartCmdArgs.ViewModel
 {
-    class HistoryRingBuffer<T> : IEnumerable<T>
+	class HistoryRingBuffer<T> : IEnumerable<T>
     {
         private readonly T[] _items;
 

@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmartCmdArgs.View.Converter
 {
-    class NullToVisibilityMultiConverter : MultiConverterBase
+	class NullToVisibilityMultiConverter : MultiConverterBase
     {
         public enum VisibleCond { AllNotNull, AnyNotNull, AllNull, AnyNull };
 

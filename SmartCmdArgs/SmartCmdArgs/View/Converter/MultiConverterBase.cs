@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace SmartCmdArgs.View.Converter
 {
-    [System.Windows.Markup.MarkupExtensionReturnType(typeof(MultiConverterBase))]
+	[System.Windows.Markup.MarkupExtensionReturnType(typeof(MultiConverterBase))]
     abstract class MultiConverterBase : System.Windows.Markup.MarkupExtension, IMultiValueConverter
     {
         public MultiConverterBase()

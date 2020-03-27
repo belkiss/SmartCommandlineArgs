@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.VisualStudio.Shell;
 
 namespace SmartCmdArgs.Helper
 {
-    static class Logger
+	static class Logger
     {
         private static string LogSource = "SmartCommandlineArgs";
 

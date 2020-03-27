@@ -2,16 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
 namespace SmartCmdArgs.Logic
 {
-    public class SuoDataJson
+	public class SuoDataJson
     {
         public int FileVersion = 2;
 

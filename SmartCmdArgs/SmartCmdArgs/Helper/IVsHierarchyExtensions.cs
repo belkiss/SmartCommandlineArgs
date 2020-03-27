@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EnvDTE;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Imaging.Interop;
@@ -11,7 +7,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 namespace SmartCmdArgs.Helper
 {
-    static class IVsHierarchyExtensions
+	static class IVsHierarchyExtensions
     {
 
         public static T GetProperty<T>(this IVsHierarchy hierarchy, int propid)

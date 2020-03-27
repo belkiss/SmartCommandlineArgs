@@ -8,14 +8,12 @@ using System.Windows.Input;
 
 namespace SmartCmdArgs.View
 {
-    using System.Diagnostics.CodeAnalysis;
-    using System.Windows;
-    using System.Windows.Controls;
+	using System.Windows.Controls;
 
-    /// <summary>
-    /// Interaction logic for ToolWindowControl.
-    /// </summary>
-    public partial class ToolWindowControl : UserControl
+	/// <summary>
+	/// Interaction logic for ToolWindowControl.
+	/// </summary>
+	public partial class ToolWindowControl : UserControl
     {
         public ViewModel.ToolWindowViewModel ViewModel
         {

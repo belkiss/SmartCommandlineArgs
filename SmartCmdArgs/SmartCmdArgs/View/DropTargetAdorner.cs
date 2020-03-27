@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 
 namespace SmartCmdArgs.View
 {
-    public class DropTargetAdorner : Adorner
+	public class DropTargetAdorner : Adorner
     {
         private static readonly PathGeometry triangle;
         private static readonly Pen pen;

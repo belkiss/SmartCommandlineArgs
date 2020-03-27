@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmartCmdArgs.Helper
 {
-    // Theres no way to find the deleted item in the item deleted handler.
-    // Thats why we need this class
-    public class BindingListEx<T> : BindingList<T>
+	// Theres no way to find the deleted item in the item deleted handler.
+	// Thats why we need this class
+	public class BindingListEx<T> : BindingList<T>
     {
         protected override void RemoveItem(int index)
         {

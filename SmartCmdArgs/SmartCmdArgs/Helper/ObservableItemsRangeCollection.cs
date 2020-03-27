@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmartCmdArgs.Helper
 {
-    public class ObservableItemsRangeCollection<T> : ObservableRangeCollection<T>
+	public class ObservableItemsRangeCollection<T> : ObservableRangeCollection<T>
     {
         public event EventHandler<CollectionItemPropertyChangedEventArgs<T>> ItemPropertyChanged;
         public event EventHandler<CollectionItemPropertyChangedDetailedEventArgs<T>> ItemPropertyChangedDetailed;

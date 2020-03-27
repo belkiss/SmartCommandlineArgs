@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmartCmdArgs.Helper
 {
-    class FileSystemWatcherDisabledContext : IDisposable
+	class FileSystemWatcherDisabledContext : IDisposable
     {
         private FileSystemWatcher watcher;
 

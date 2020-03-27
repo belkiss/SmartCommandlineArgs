@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Specialized;
 
 namespace SmartCmdArgs.ViewModel
 {
-    public abstract class TreeEventBase
+	public abstract class TreeEventBase
     {
         public CmdBase Sender { get; }
         public CmdProject AffectedProject { get; set; }

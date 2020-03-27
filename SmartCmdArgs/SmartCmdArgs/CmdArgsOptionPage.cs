@@ -1,14 +1,10 @@
 ﻿using Microsoft.VisualStudio.Shell;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmartCmdArgs
 {
-    public class CmdArgsOptionPage : DialogPage
+	public class CmdArgsOptionPage : DialogPage
     {
         private bool _vcsSupport = true;
         private bool _macroEvaluation = true;

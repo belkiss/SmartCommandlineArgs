@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace SmartCmdArgs.ViewModel
 {
-    static class DataObjectGenerator
+	static class DataObjectGenerator
     {
         public static DataObject Genrate(IEnumerable<CmdBase> data, bool includeObject)
         {

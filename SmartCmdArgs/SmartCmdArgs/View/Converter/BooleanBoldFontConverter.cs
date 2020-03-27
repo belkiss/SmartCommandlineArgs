@@ -1,14 +1,9 @@
-﻿using SmartCmdArgs.Helper;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmartCmdArgs.View.Converter
 {
-    class BooleanBoldFontConverter : ConverterBase
+	class BooleanBoldFontConverter : ConverterBase
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
