@@ -22,7 +22,6 @@ namespace SmartCmdArgs.ViewModel
                 dataObject.SetData(CmdArgsPackage.DataObjectCmdListFormat, dataList);
 
             dataObject.SetData(CmdArgsPackage.DataObjectCmdJsonFormat, SerializeToJson(dataList));
-            dataObject.SetData(DataFormats.UnicodeText, string.Join(Environment.NewLine, SerializeToStringList(dataList)));
 
             return dataObject;
         }
@@ -36,32 +35,11 @@ namespace SmartCmdArgs.ViewModel
             return JsonConvert.SerializeObject(jsonData);
         }
 
-        private static IEnumerable<String> SerializeToStringList(IEnumerable<CmdBase> data, int level = 0)
-        {
-            string indent = new String('\t', level);
-            foreach (var cmd in data)
-            {
-                if (cmd is CmdArgument arg)
-                {
-                    yield return indent + arg.Value;
-                }
-                else if (cmd is CmdGroup grp)
-                {
-                    yield return indent + grp.Value + ":";
-                    foreach (var line in SerializeToStringList(grp.Items, level+1))
-                    {
-                        yield return line;
-                    }
-                }
-            }
-        }
-
         public static bool ExtractableDataPresent(IDataObject dataObject)
         {
             return dataObject.GetDataPresent(CmdArgsPackage.DataObjectCmdListFormat)
                    || dataObject.GetDataPresent(CmdArgsPackage.DataObjectCmdJsonFormat)
-                   || dataObject.GetDataPresent(DataFormats.Text)
-                   || dataObject.GetDataPresent(DataFormats.FileDrop);
+                   || dataObject.GetDataPresent(DataFormats.Text);
         }
 
         public static IEnumerable<CmdBase> Extract(IDataObject dataObject, bool includeObject)
@@ -74,10 +52,6 @@ namespace SmartCmdArgs.ViewModel
                 result = dataObject.GetData(CmdArgsPackage.DataObjectCmdListFormat) as List<CmdBase>;
             if (result == null && dataObject.GetDataPresent(CmdArgsPackage.DataObjectCmdJsonFormat))
                 result = DeserializeFromJson(dataObject.GetData(CmdArgsPackage.DataObjectCmdJsonFormat) as string);
-            if (result == null && dataObject.GetDataPresent(DataFormats.UnicodeText))
-                result = DeserializeFromStringList((dataObject.GetData(DataFormats.UnicodeText) as string)?.Split(new []{Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries));
-            if (result == null && dataObject.GetDataPresent(DataFormats.FileDrop))
-                result = DeserializeFromStringList((dataObject.GetData(DataFormats.FileDrop) as string[])?.Select(s => $"\"{s}\""));
             return result;
         }
 
@@ -90,35 +64,6 @@ namespace SmartCmdArgs.ViewModel
                 return null;
 
             return DataObjectJsonItem.Convert(jsonData);
-        }
-
-        private static IEnumerable<CmdBase> DeserializeFromStringList(IEnumerable<string> strings)
-        {
-            if (strings == null)
-                return null;
-
-            Stack<CmdGroup> groupStack = new Stack<CmdGroup>();
-            CmdGroup rootGroup = new CmdGroup(null);
-            groupStack.Push(rootGroup);
-            foreach (var item in strings)
-            {
-                var level = Math.Min(groupStack.Count-1, item.TakeWhile(c => c == '\t').Count());
-
-                while (level < groupStack.Count-1)
-                    groupStack.Pop();
-
-                var trimmedItem = item.Substring(level);
-
-                if (trimmedItem.EndsWith(":"))
-                {
-                    var group = new CmdGroup(trimmedItem.Substring(0, trimmedItem.Length-1));
-                    groupStack.Peek().Add(group);
-                    groupStack.Push(group);
-                }
-                else
-                    groupStack.Peek().Add(new CmdArgument(trimmedItem));
-            }
-            return rootGroup.Items;
         }
 
         private class DataObjectJsonItem
