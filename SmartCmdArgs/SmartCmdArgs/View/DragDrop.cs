@@ -8,7 +8,7 @@ using SmartCmdArgs.ViewModel;
 
 namespace SmartCmdArgs.View
 {
-	public static class DragDrop
+    public static class DragDrop
     {
         private static DragInfo dragInfo;
         private static DropInfo dropInfo;
@@ -62,7 +62,7 @@ namespace SmartCmdArgs.View
         {
             System.Diagnostics.Debug.WriteLine($"DragEnter: {tvItem.Item}");
 
-            // this logic was moved to OnDragOver to fix an issue 
+            // this logic was moved to OnDragOver to fix an issue
             // when using drag and drop if the window is floating
 
             //if (dropInfo == null)
@@ -115,7 +115,7 @@ namespace SmartCmdArgs.View
 
                 // this controls the adorner
                 dropInfo.Effects = e.Effects;
-                
+
                 e.Handled = true;
             }
         }
@@ -148,9 +148,9 @@ namespace SmartCmdArgs.View
                     data = data.Select(cmd => cmd.Copy());
 
                 var dataList = data.ToList();
-                
-                var souldDeselctItem = dropInfo.InsertPosition.HasFlag(DropInfo.RelativInsertPosition.IntoTargetItem) 
-                    && dropInfo.TargetItem.Item is CmdContainer con 
+
+                var shouldDeselectItem = dropInfo.InsertPosition.HasFlag(DropInfo.RelativInsertPosition.IntoTargetItem)
+                    && dropInfo.TargetItem.Item is CmdContainer con
                     && !con.IsExpanded;
 
                 if (dataList.Count > 0)
@@ -158,7 +158,7 @@ namespace SmartCmdArgs.View
 
                 foreach (var sourceItem in dataList)
                 {
-                    if (souldDeselctItem)
+                    if (shouldDeselectItem)
                         sourceItem.IsSelected = false;
                     dropInfo.TargetContainer.Insert(idx++, sourceItem);
                 }
@@ -166,7 +166,7 @@ namespace SmartCmdArgs.View
                 var focusItem = dragInfo?.DirectSourceItem ?? dataList.FirstOrDefault();
 
                 var selectItemCommand = dropInfo.TargetItem.ParentTreeView.SelectItemCommand;
-                if (souldDeselctItem)
+                if (shouldDeselectItem)
                     selectItemCommand.SafeExecute(dropInfo.TargetItem.Item);
                 else if (selectItemCommand.SafeExecute(focusItem))
                 {
