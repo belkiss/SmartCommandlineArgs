@@ -9,7 +9,7 @@ namespace SmartCmdArgs.ViewModel
 {
 	static class DataObjectGenerator
     {
-        public static DataObject Genrate(IEnumerable<CmdBase> data, bool includeObject)
+        public static DataObject Generate(IEnumerable<CmdBase> data, bool includeObject)
         {
             var dataObject = new DataObject();
 

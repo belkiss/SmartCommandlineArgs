@@ -36,7 +36,7 @@ namespace SmartCmdArgs.View
                 dragInfo.GatherSelectedItems(treeView);
                 if (dragInfo.CanStartDrag())
                 {
-                    var dataObject = DataObjectGenerator.Genrate(dragInfo.SourceItems, includeObject: true);
+                    var dataObject = DataObjectGenerator.Generate(dragInfo.SourceItems, includeObject: true);
 
                     if (dragInfo.DirectVisualSourceItem.Item.IsInEditMode)
                         dragInfo.DirectVisualSourceItem.Item.CommitEdit();

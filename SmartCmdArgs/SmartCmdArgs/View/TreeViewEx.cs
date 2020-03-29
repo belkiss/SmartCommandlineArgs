@@ -149,11 +149,11 @@ namespace SmartCmdArgs.View
             ContextMenu.Items.Add(_projConfigMenuItem = new MenuItem { Header = "Project Configuration" });
             ContextMenu.Items.Add(_launchProfileMenuItem = new MenuItem { Header = "Launch Profile" });
 
-            CollapseWhenDisbaled(_exclusiveModeMenuItem);
-            CollapseWhenDisbaled(_splitArgumentMenuItem);
-            CollapseWhenDisbaled(_setAsStartupProjectMenuItem);
-            CollapseWhenDisbaled(_projConfigMenuItem);
-            CollapseWhenDisbaled(_launchProfileMenuItem);
+            CollapseWhenDisabled(_exclusiveModeMenuItem);
+            CollapseWhenDisabled(_splitArgumentMenuItem);
+            CollapseWhenDisabled(_setAsStartupProjectMenuItem);
+            CollapseWhenDisabled(_projConfigMenuItem);
+            CollapseWhenDisabled(_launchProfileMenuItem);
 
             DataContextChanged += OnDataContextChanged;
             ContextMenuOpening += OnContextMenuOpening;
@@ -290,7 +290,7 @@ namespace SmartCmdArgs.View
             }
         }
 
-        private void CollapseWhenDisbaled(FrameworkElement element)
+        private void CollapseWhenDisabled(FrameworkElement element)
         {
             element.SetBinding(FrameworkElement.VisibilityProperty, new Binding
             {
