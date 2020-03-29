@@ -12,7 +12,7 @@ using SmartCmdArgs.ViewModel;
 
 namespace SmartCmdArgs.View
 {
-	public class TreeViewEx : TreeView
+    public class TreeViewEx : TreeView
     {
         static TreeViewEx()
         {
@@ -23,15 +23,15 @@ namespace SmartCmdArgs.View
             RegisterCommand(ApplicationCommands.Undo, UndoCommandProperty);
             RegisterCommand(ApplicationCommands.Redo, RedoCommandProperty);
 
-            CommandManager.RegisterClassCommandBinding(typeof(TreeViewEx), new CommandBinding(ApplicationCommands.SelectAll, 
+            CommandManager.RegisterClassCommandBinding(typeof(TreeViewEx), new CommandBinding(ApplicationCommands.SelectAll,
                 (sender, args) => ((TreeViewEx)sender).SelectAllItems(args), (sender, args) => args.CanExecute = ((TreeViewEx)sender).HasItems));
 
             void RegisterCommand(RoutedUICommand routedUiCommand, DependencyProperty commandProperty)
             {
-                CommandManager.RegisterClassCommandBinding(typeof(TreeViewEx), 
+                CommandManager.RegisterClassCommandBinding(typeof(TreeViewEx),
                     new CommandBinding(
-                        routedUiCommand, 
-                        (sender, args) => ((ICommand)((DependencyObject)sender).GetValue(commandProperty))?.Execute(args.Parameter), 
+                        routedUiCommand,
+                        (sender, args) => ((ICommand)((DependencyObject)sender).GetValue(commandProperty))?.Execute(args.Parameter),
                         (sender, args) => args.CanExecute = ((ICommand)((DependencyObject)sender).GetValue(commandProperty)).CanExecute(args.Parameter)));
             }
         }
@@ -55,6 +55,11 @@ namespace SmartCmdArgs.View
         public ICommand UndoCommand { get => (ICommand)GetValue(UndoCommandProperty); set => SetValue(UndoCommandProperty, value); }
         public ICommand RedoCommand { get => (ICommand)GetValue(RedoCommandProperty); set => SetValue(RedoCommandProperty, value); }
 
+        public static readonly DependencyProperty DuplicateArgumentCommandProperty = DependencyProperty.Register(
+            nameof(DuplicateArgumentCommand), typeof(ICommand), typeof(TreeViewEx),
+            new PropertyMetadata(default(ICommand), (d, e) => ((TreeViewEx)d)._duplicateArgumentMenuItem.Command = (ICommand)e.NewValue));
+        public ICommand DuplicateArgumentCommand { get => (ICommand)GetValue(DuplicateArgumentCommandProperty); set => SetValue(DuplicateArgumentCommandProperty, value); }
+
         public static readonly DependencyProperty ToggleSelectedCommandProperty = DependencyProperty.Register(
             nameof(ToggleSelectedCommand), typeof(ICommand), typeof(TreeViewEx), new PropertyMetadata(default(ICommand)));
         public ICommand ToggleSelectedCommand { get => (ICommand)GetValue(ToggleSelectedCommandProperty); set => SetValue(ToggleSelectedCommandProperty, value); }
@@ -66,20 +71,20 @@ namespace SmartCmdArgs.View
         public static readonly DependencyProperty SelectItemCommandProperty = DependencyProperty.Register(
             nameof(SelectItemCommand), typeof(ICommand), typeof(TreeViewEx), new PropertyMetadata(default(ICommand)));
         public ICommand SelectItemCommand { get => (ICommand)GetValue(SelectItemCommandProperty); set => SetValue(SelectItemCommandProperty, value); }
-        
+
 
         public static readonly DependencyProperty SplitArgumentCommandProperty = DependencyProperty.Register(
-            nameof(SplitArgumentCommand), typeof(ICommand), typeof(TreeViewEx), 
+            nameof(SplitArgumentCommand), typeof(ICommand), typeof(TreeViewEx),
             new PropertyMetadata(default(ICommand), (d, e) => ((TreeViewEx)d)._splitArgumentMenuItem.Command = (ICommand)e.NewValue));
         public ICommand SplitArgumentCommand { get { return (ICommand)GetValue(SplitArgumentCommandProperty); } set { SetValue(SplitArgumentCommandProperty, value); } }
-        
+
         public static readonly DependencyProperty NewGroupFromArgumentsCommandProperty = DependencyProperty.Register(
-            nameof(NewGroupFromArgumentsCommand), typeof(ICommand), typeof(TreeViewEx), 
+            nameof(NewGroupFromArgumentsCommand), typeof(ICommand), typeof(TreeViewEx),
             new PropertyMetadata(default(ICommand), (d, e) => ((TreeViewEx)d)._newGroupFromArgumentsMenuItem.Command = (ICommand)e.NewValue));
         public ICommand NewGroupFromArgumentsCommand { get { return (ICommand)GetValue(NewGroupFromArgumentsCommandProperty); } set { SetValue(NewGroupFromArgumentsCommandProperty, value); } }
-        
+
         public static readonly DependencyProperty SetAsStartupProjectCommandProperty = DependencyProperty.Register(
-            nameof(SetAsStartupProjectCommand), typeof(ICommand), typeof(TreeViewEx), 
+            nameof(SetAsStartupProjectCommand), typeof(ICommand), typeof(TreeViewEx),
             new PropertyMetadata(default(ICommand), (d, e) => ((TreeViewEx)d)._setAsStartupProjectMenuItem.Command = (ICommand)e.NewValue));
         public ICommand SetAsStartupProjectCommand { get { return (ICommand)GetValue(SetAsStartupProjectCommandProperty); } set { SetValue(SetAsStartupProjectCommandProperty, value); } }
 
@@ -90,12 +95,12 @@ namespace SmartCmdArgs.View
         public static readonly DependencyProperty SetLaunchProfileCommandProperty = DependencyProperty.Register(
             nameof(SetLaunchProfileCommand), typeof(ICommand), typeof(TreeViewEx), new PropertyMetadata(default(ICommand)));
         public ICommand SetLaunchProfileCommand { get { return (ICommand)GetValue(SetLaunchProfileCommandProperty); } set { SetValue(SetLaunchProfileCommandProperty, value); } }
-        
+
         public static readonly DependencyProperty SetExclusiveModeCommandProperty = DependencyProperty.Register(
-            nameof(ToggleExclusiveModeCommand), typeof(ICommand), typeof(TreeViewEx), 
+            nameof(ToggleExclusiveModeCommand), typeof(ICommand), typeof(TreeViewEx),
             new PropertyMetadata(default(ICommand), (d, e) => ((TreeViewEx)d)._exclusiveModeMenuItem.Command = (ICommand)e.NewValue));
         public ICommand ToggleExclusiveModeCommand { get { return (ICommand)GetValue(SetExclusiveModeCommandProperty); } set { SetValue(SetExclusiveModeCommandProperty, value); } }
-        
+
         protected override DependencyObject GetContainerForItemOverride() => new TreeViewItemEx(this);
         protected override bool IsItemItsOwnContainerOverride(object item) => item is TreeViewItemEx;
 
@@ -115,7 +120,7 @@ namespace SmartCmdArgs.View
         {
             return (bool)element.GetValue(IsItemSelectedProperty);
         }
-        
+
         private static bool IsCtrlPressed => (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control;
         private static bool IsShiftPressed => (Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift;
 
@@ -124,6 +129,7 @@ namespace SmartCmdArgs.View
 
         public IEnumerable<TreeViewItemEx> VisibleTreeViewItems => GetTreeViewItems(this, false);
 
+        private MenuItem _duplicateArgumentMenuItem;
         private MenuItem _exclusiveModeMenuItem;
         private MenuItem _splitArgumentMenuItem;
         private MenuItem _newGroupFromArgumentsMenuItem;
@@ -137,6 +143,8 @@ namespace SmartCmdArgs.View
         {
             // TODO: Implement ContextMenu
             ContextMenu = new ContextMenu();
+            ContextMenu.Items.Add(_duplicateArgumentMenuItem = new MenuItem { Header = "Duplicate" });
+            ContextMenu.Items.Add(new Separator());
             ContextMenu.Items.Add(new MenuItem { Command = ApplicationCommands.Cut });
             ContextMenu.Items.Add(new MenuItem { Command = ApplicationCommands.Copy });
             ContextMenu.Items.Add(new MenuItem { Command = ApplicationCommands.Paste });
@@ -343,7 +351,7 @@ namespace SmartCmdArgs.View
                 }
             }
         }
-        
+
         protected override void OnKeyDown(KeyEventArgs e)
         {
             if (e.Key == Key.Space)
@@ -361,7 +369,7 @@ namespace SmartCmdArgs.View
                 foreach (var treeViewItem in GetTreeViewItems(this, true))
                     SetIsItemSelected(treeViewItem, false);
             }
-            
+
             // Is this an item range selection?
             if (IsShiftPressed && _lastItemSelected != null)
             {
@@ -445,7 +453,7 @@ namespace SmartCmdArgs.View
                     {
                         treeViewItem.Item.CommitEdit();
                     }
-                    
+
                     SetIsItemSelected(treeViewItem, false);
                 }
             }
@@ -546,7 +554,7 @@ namespace SmartCmdArgs.View
 
         protected override DependencyObject GetContainerForItemOverride() => new TreeViewItemEx(ParentTreeView, this.Level+1);
         protected override bool IsItemItsOwnContainerOverride(object item) => item is TreeViewItemEx;
-        
+
         public event KeyEventHandler HandledKeyDown
         {
             add => AddHandler(KeyDownEvent, value, true);
@@ -612,9 +620,9 @@ namespace SmartCmdArgs.View
 
         protected override void OnTextInput(TextCompositionEventArgs e)
         {
-            if (IsFocused 
-                && Item.IsEditable 
-                && !Item.IsInEditMode 
+            if (IsFocused
+                && Item.IsEditable
+                && !Item.IsInEditMode
                 && !string.IsNullOrEmpty(e.Text)
                 && !char.IsControl(e.Text[0]))
             {
@@ -765,7 +773,7 @@ namespace SmartCmdArgs.View
 
                     // Let Tree select this item
                     HandleMouseClick(e, true, IsShiftPressed, IsCtrlPressed);
-                    
+
                     // If the item was not selected before we change into pre-selection mode
                     // Aka. User clicked the item for the first time
                     if (!wasSelected && Item.IsSelected)
@@ -806,9 +814,9 @@ namespace SmartCmdArgs.View
 
             // Note: e.ClickCount is always 1 for MouseUp
             Debug.WriteLine($"Entering OnMouseUp");
-            
+
             e.Handled = true; // we handle  clicks
-            
+
             // release mouse capture
             //Mouse.Capture(null);
 
@@ -857,7 +865,7 @@ namespace SmartCmdArgs.View
                             {
                                 IsExpanded = !IsExpanded;
                                 Debug.WriteLine("Toggled expanded");
-                            }                           
+                            }
                         }
                     }
                 }
@@ -903,10 +911,10 @@ namespace SmartCmdArgs.View
             {
                 UpdateLayout();
             }
-            
+
             scrollPresenter?.MakeVisible(this, new Rect(new Point(0, 0), this.ItemBorder.RenderSize));
         }
-        
+
 
         protected override void OnDragEnter(DragEventArgs e) => DragDrop.OnDragEnter(this, e);
         protected override void OnQueryContinueDrag(QueryContinueDragEventArgs e) => DragDrop.OnQueryContinueDrag(this, e);
@@ -927,7 +935,7 @@ namespace SmartCmdArgs.View
             }
             else if (verticalPos > sv.ViewportHeight - tolerance) //Bottom of visible list?
             {
-                sv.ScrollToVerticalOffset(sv.VerticalOffset + (verticalPos - sv.ViewportHeight + tolerance) / 1.5); //Scroll down.    
+                sv.ScrollToVerticalOffset(sv.VerticalOffset + (verticalPos - sv.ViewportHeight + tolerance) / 1.5); //Scroll down.
             }
         }
 

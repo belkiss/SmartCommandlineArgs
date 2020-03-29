@@ -9,7 +9,7 @@ using SmartCmdArgs.Logic;
 
 namespace SmartCmdArgs.ViewModel
 {
-	public class ToolWindowViewModel : PropertyChangedBase
+    public class ToolWindowViewModel : PropertyChangedBase
     {
         private static readonly string DefaultFontFamily = null;
         private static readonly string MonospaceFontFamily = "Consolas";
@@ -59,11 +59,13 @@ namespace SmartCmdArgs.ViewModel
         public RelayCommand ShowAllProjectsCommand { get; }
 
         public RelayCommand ToggleSelectedCommand { get; }
-        
+
+        public RelayCommand DuplicateArgumentCommand { get; }
+
         public RelayCommand CopySelectedItemsCommand { get; }
-        
+
         public RelayCommand PasteItemsCommand { get; }
-        
+
         public RelayCommand CutItemsCommand { get; }
 
         public RelayCommand UndoCommand { get; }
@@ -132,9 +134,9 @@ namespace SmartCmdArgs.ViewModel
                     var prjCmdArgs = CmdArgsPackage.CreateCommandLineArgsForProject(focusedProject.Id);
                     if (prjCmdArgs == null)
                         return;
-                    
+
                     // copy=false see #58
-                    Clipboard.SetDataObject(prjCmdArgs, copy: false);                   
+                    Clipboard.SetDataObject(prjCmdArgs, copy: false);
                 }, canExecute: _ => HasStartupProject());
 
             ShowAllProjectsCommand = new RelayCommand(
@@ -149,6 +151,11 @@ namespace SmartCmdArgs.ViewModel
                     TreeViewModel.ToggleSelected();
                     ToolWindowHistory.Resume();
                 }, canExecute: _ => HasStartupProject());
+
+            DuplicateArgumentCommand = new RelayCommand(
+                () => {
+                    DuplicateArguments();
+                }, canExecute: _ => HasSelectedItems());
 
             CopySelectedItemsCommand = new RelayCommand(() => CopySelectedItemsToClipboard(includeProjects: true), canExecute: _ => HasSelectedItems());
 
@@ -171,7 +178,7 @@ namespace SmartCmdArgs.ViewModel
                                .Cast<Match>()
                                .Select((m) => new CmdArgument(arg: m.Value, isChecked: selectedItem.IsChecked ?? false))
                                .ToList();
-                
+
                 TreeViewModel.AddItemsAt(selectedItem, newItems);
                 RemoveItems(new[] { selectedItem });
                 TreeViewModel.SelectItems(newItems);
@@ -193,17 +200,17 @@ namespace SmartCmdArgs.ViewModel
                 var newGrp = new CmdGroup(name: "");
                 var insertIndex = parent.TakeWhile((item) => item != firstElement).Count();
                 parent.Insert(insertIndex, newGrp);
-                
+
                 // move items to new group
                 parent.Items.RemoveRange(itemsToGroup);
                 itemsToGroup.ForEach(item => item.IsSelected = false);
                 newGrp.AddRange(itemsToGroup);
-                
+
                 // set selection to new group
                 TreeViewModel.SelectItemCommand.SafeExecute(newGrp);
 
             }, _ => HasSelectedItems() && HaveSameParent(GetSelectedRootItems(true)));
-            
+
             SetAsStartupProjectCommand = new RelayCommand(() => {
                 var selectedItem = TreeViewModel.SelectedItems.FirstOrDefault();
                 if (selectedItem is CmdProject proj)
@@ -278,6 +285,20 @@ namespace SmartCmdArgs.ViewModel
             return result;
         }
 
+        private void DuplicateArguments()
+        {
+            var itemListToCopy = GetSelectedRootItems(includeProjects: false);
+            if (itemListToCopy.Any())
+            {
+                var newItems = itemListToCopy.Select(cmd => cmd.Copy()).ToList();
+
+                ToolWindowHistory.SaveState();
+
+                TreeViewModel.AddItemsAtFocusedItem(newItems);
+                TreeViewModel.SelectItems(newItems);
+            }
+        }
+
         private void CopySelectedItemsToClipboard(bool includeProjects)
         {
             var itemListToCopy = GetSelectedRootItems(includeProjects).ToList();
@@ -339,7 +360,7 @@ namespace SmartCmdArgs.ViewModel
         {
             return TreeViewModel.SelectedItems.OfType<T>().Any();
         }
-        
+
         /// <summary>
         /// Helper method for CanExecute condition of the commands
         /// </summary>
@@ -411,13 +432,13 @@ namespace SmartCmdArgs.ViewModel
 
             var cmdPrj = new CmdProject(guid,
                                         project.GetKind(),
-                                        project.GetDisplayName(), 
+                                        project.GetDisplayName(),
                                         ListEntriesToCmdObjects(data.Items),
                                         data.Expanded,
                                         data.ExclusiveMode);
 
             // Assign TreeViewModel after AddRange to not get a lot of ParentChanged events
-            cmdPrj.ParentTreeViewModel = TreeViewModel; 
+            cmdPrj.ParentTreeViewModel = TreeViewModel;
 
             TreeViewModel.Projects[guid] = cmdPrj;
 
