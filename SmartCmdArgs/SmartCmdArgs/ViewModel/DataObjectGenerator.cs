@@ -7,7 +7,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace SmartCmdArgs.ViewModel
 {
-	static class DataObjectGenerator
+    static class DataObjectGenerator
     {
         public static DataObject Generate(IEnumerable<CmdBase> data, bool includeObject)
         {
@@ -73,7 +73,10 @@ namespace SmartCmdArgs.ViewModel
 
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public string Value { get; set; } = null;
-            
+
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public string WorkingDir { get; set; } = null;
+
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public string ProjectConfig { get; set; } = null;
 
@@ -95,6 +98,10 @@ namespace SmartCmdArgs.ViewModel
                     {
                         yield return new DataObjectJsonItem {Enabled = arg.IsChecked, Value = arg.Value};
                     }
+                    else if (cmd is CmdWorkingDir workingDir)
+                    {
+                        yield return new DataObjectJsonItem {Enabled = workingDir.IsChecked, WorkingDir = workingDir.Value};
+                    }
                     else if (cmd is CmdGroup grp)
                     {
                         yield return new DataObjectJsonItem {Value = grp.Value, ProjectConfig = grp.ProjectConfig, LaunchProfile = grp.LaunchProfile, ExclusiveMode = grp.ExclusiveMode, Items = Convert(grp.Items)};
@@ -106,7 +113,11 @@ namespace SmartCmdArgs.ViewModel
             {
                 foreach (var item in data)
                 {
-                    if (item.Items == null)
+                    if (item.WorkingDir != null)
+                    {
+                        yield return new CmdWorkingDir(item.WorkingDir, item.Enabled ?? false);
+                    }
+                    else if (item.Items == null)
                     {
                         yield return new CmdArgument(item.Value, item.Enabled ?? false);
                     }

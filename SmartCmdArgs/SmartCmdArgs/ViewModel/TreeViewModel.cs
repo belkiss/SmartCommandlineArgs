@@ -10,7 +10,7 @@ using SmartCmdArgs.View;
 
 namespace SmartCmdArgs.ViewModel
 {
-	public class TreeViewModel : PropertyChangedBase
+    public class TreeViewModel : PropertyChangedBase
     {
         private object treeitems;
         private bool showAllProjects;
@@ -146,7 +146,7 @@ namespace SmartCmdArgs.ViewModel
             }
             UpdateTree();
         }
-        
+
         public void UpdateTree()
         {
             if (ShowAllProjects)
@@ -183,7 +183,7 @@ namespace SmartCmdArgs.ViewModel
                   SelectItemCommand.SafeExecute(item);
                 else
                   item.IsSelected = true;
-                
+
                 isFirst = false;
             }
         }
@@ -221,8 +221,8 @@ namespace SmartCmdArgs.ViewModel
                 Predicate<CmdBase> filter = null;
                 if (!string.IsNullOrEmpty(filterString))
                 {
-                    filter = item => 
-                           item is CmdArgument && item.Value.Contains(filterString, matchCase ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase) 
+                    filter = item =>
+                           (item is CmdArgument || item is CmdWorkingDir) && item.Value.Contains(filterString, matchCase ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase)
                         || item is CmdContainer && !((CmdContainer)item).ItemsView.IsEmpty;
                 }
 
@@ -266,7 +266,7 @@ namespace SmartCmdArgs.ViewModel
         {
             public CmdBase Source { get; private set; }
             public CmdProject AffectedProject { get; private set; }
-            
+
             public TreeChangedEventArgs(CmdBase source, CmdProject affectedProject)
             {
                 Source = source;
@@ -288,7 +288,7 @@ namespace SmartCmdArgs.ViewModel
             {
                 TreeContentChanged?.Invoke(this, new TreeChangedEventArgs(e.Sender, e.AffectedProject));
             }
-            
+
             switch (treeEvent)
             {
                 case SelectionChangedEvent e:
@@ -315,7 +315,7 @@ namespace SmartCmdArgs.ViewModel
                         textBeforeEdit = null;
                     }
 
-                    IsInEditMode = e.IsInEditMode;                   
+                    IsInEditMode = e.IsInEditMode;
                     break;
                 case ItemsChangedEvent e:
                     // This is called quite frequently, maybe we need

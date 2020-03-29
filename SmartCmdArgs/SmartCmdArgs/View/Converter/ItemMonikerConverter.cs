@@ -6,20 +6,24 @@ using SmartCmdArgs.ViewModel;
 
 namespace SmartCmdArgs.View.Converter
 {
-	class ItemMonikerConverter : MultiConverterBase
+    class ItemMonikerConverter : MultiConverterBase
     {
         public override object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             var item = values[0];
-            var isExpanded = (bool) values[1];
             if (item is CmdGroup grp)
             {
+                var isExpanded = (bool)values[1];
                 if (isExpanded)
                     return KnownMonikers.FolderOpened;
                 else
                     return KnownMonikers.FolderClosed;
             }
-            if (item is CmdProject prj)
+            else if (item is CmdWorkingDir workingDir)
+            {
+                return KnownMonikers.Application;
+            }
+            else if (item is CmdProject prj)
             {
                 if (prj.Kind == ProjectKinds.CS) return KnownMonikers.CSProjectNode;
                 if (prj.Kind == ProjectKinds.CSCore) return KnownMonikers.CSProjectNode;

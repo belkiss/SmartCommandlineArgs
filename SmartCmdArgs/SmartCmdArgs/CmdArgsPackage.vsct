@@ -20,6 +20,7 @@
   <!--This header contains the command ids for the menus provided by the shell. -->
   <Extern href="vsshlids.h"/>
 
+  <!-- Adds a reference to the KnownMonikers in the ImageCatalog for use in the <button> elements -->
   <Include href="KnownImageIds.vsct"/>
 
   <!--The Commands section is where commands, menus, and menu groups are defined.
@@ -78,7 +79,15 @@
         <Parent guid="guidCmdArgsToolBarCmdSet" id="TWToolbarGroupAddRemove" />
         <Icon guid="guidToolBarImages" id="bmpAddIcon" />
         <Strings>
-          <ButtonText>Add new row</ButtonText>
+          <ButtonText>Add new argument</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="guidCmdArgsToolBarCmdSet" id="ToolbarAddWorkingDirCommandId" priority="0x0100" type="Button">
+        <Parent guid="guidCmdArgsToolBarCmdSet" id="TWToolbarGroupAddRemove" />
+        <Icon guid="ImageCatalogGuid" id="Application" />
+        <CommandFlag>IconIsMoniker</CommandFlag>
+        <Strings>
+          <ButtonText>Add new working directory</ButtonText>
         </Strings>
       </Button>
       <Button guid="guidCmdArgsToolBarCmdSet" id="ToolbarAddGroupCommandId" priority="0x0100" type="Button">
@@ -144,6 +153,7 @@
   <KeyBindings>
     <!-- sould work with guidKeyBindingsCmdSet and KeyBindingAddCmdId but doesn't -->
     <KeyBinding guid="guidCmdArgsToolBarCmdSet" id="ToolbarAddCommandId" editor="guidToolWindow" key1="VK_INSERT"/>
+    <KeyBinding guid="guidCmdArgsToolBarCmdSet" id="ToolbarAddWorkingDirCommandId" editor="guidToolWindow" key1="VK_INSERT" mod1="CONTROL ALT"/>
     <KeyBinding guid="guidCmdArgsToolBarCmdSet" id="ToolbarAddGroupCommandId" editor="guidToolWindow" key1="VK_INSERT" mod1="ALT"/>
     <KeyBinding guid="guidCmdArgsToolBarCmdSet" id="ToolbarMoveUpCommandId" editor="guidToolWindow" key1="VK_UP" mod1="CONTROL"/>
     <KeyBinding guid="guidCmdArgsToolBarCmdSet" id="ToolbarMoveDownCommandId" editor="guidToolWindow" key1="VK_DOWN" mod1="CONTROL"/>
@@ -163,18 +173,19 @@
 
     <!-- This is the guid used to group toolbar commands together -->
     <GuidSymbol name="guidCmdArgsToolBarCmdSet" value="{53D59879-7413-491E-988C-938117B773E3}">
-      <IDSymbol name="ToolbarAddCommandId" value="0x1100"/>
-      <IDSymbol name="ToolbarRemoveCommandId" value="0x1101"/>
-      <IDSymbol name="ToolbarMoveUpCommandId" value="0x1102"/>
-      <IDSymbol name="ToolbarMoveDownCommandId" value="0x1103"/>
-      <IDSymbol name="ToolbarCopyCommandlineCommandId" value="0x1104"/>
-      <IDSymbol name="ToolbarAddGroupCommandId" value="0x1105"/>
-      <IDSymbol name="ToolbarShowAllProjectsCommandId" value="0x1106"/>
+      <IDSymbol name="ToolbarAddCommandId"             value="0x1100"/>
+      <IDSymbol name="ToolbarAddWorkingDirCommandId"   value="0x1101"/>
+      <IDSymbol name="ToolbarRemoveCommandId"          value="0x1102"/>
+      <IDSymbol name="ToolbarMoveUpCommandId"          value="0x1103"/>
+      <IDSymbol name="ToolbarMoveDownCommandId"        value="0x1104"/>
+      <IDSymbol name="ToolbarCopyCommandlineCommandId" value="0x1105"/>
+      <IDSymbol name="ToolbarAddGroupCommandId"        value="0x1106"/>
+      <IDSymbol name="ToolbarShowAllProjectsCommandId" value="0x1107"/>
 
-      <IDSymbol name="TWToolbar" value="0x1000" />
+      <IDSymbol name="TWToolbar"               value="0x1000" />
       <IDSymbol name="TWToolbarGroupAddRemove" value="0x1050" />
-      <IDSymbol name="TWToolbarGroupMove" value="0x1051" />
-      <IDSymbol name="TWToolbarEdit" value="0x1052" />
+      <IDSymbol name="TWToolbarGroupMove"      value="0x1051" />
+      <IDSymbol name="TWToolbarEdit"           value="0x1052" />
     </GuidSymbol>
 
 

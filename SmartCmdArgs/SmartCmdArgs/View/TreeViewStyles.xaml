@@ -200,6 +200,10 @@
         <!--<Setter Property="Background" Value="SkyBlue" />-->
     </Style>
 
+    <Style x:Key="WorkingDirItemStyle" TargetType="TreeViewItem" BasedOn="{StaticResource ItemBaseStyle}">
+        <!--<Setter Property="Background" Value="Goldenrod" />-->
+    </Style>
+
     <HierarchicalDataTemplate x:Key="ProjectDataTemplate" DataType="{x:Type vm:CmdProject}" ItemsSource="{Binding ItemsView}">
         <local:ArgumentItemView DataContext="{Binding}"
                                 FontWeight="{Binding IsStartupProject, Converter={c:BooleanBoldFontConverter}}"/>
@@ -210,6 +214,10 @@
     </HierarchicalDataTemplate>
 
     <DataTemplate x:Key="ArgumentDataTemplate" DataType="{x:Type vm:CmdArgument}">
+        <local:ArgumentItemView DataContext="{Binding}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="WorkingDirDataTemplate" DataType="{x:Type vm:CmdWorkingDir}">
         <local:ArgumentItemView DataContext="{Binding}" />
     </DataTemplate>
 

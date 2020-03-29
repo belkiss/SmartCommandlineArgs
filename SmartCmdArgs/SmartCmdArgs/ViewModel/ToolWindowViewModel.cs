@@ -45,6 +45,7 @@ namespace SmartCmdArgs.ViewModel
         }
 
         public RelayCommand AddEntryCommand { get; }
+        public RelayCommand AddWorkingDirCommand { get; }
 
         public RelayCommand AddGroupCommand { get; }
 
@@ -98,6 +99,14 @@ namespace SmartCmdArgs.ViewModel
                     var newArg = new CmdArgument(arg: "", isChecked: true);
                     TreeViewModel.AddItemAtFocusedItem(newArg);
                     TreeViewModel.SelectItemCommand.SafeExecute(newArg);
+                }, canExecute: _ => HasStartupProject());
+
+            AddWorkingDirCommand = new RelayCommand(
+                () => {
+                    ToolWindowHistory.SaveState();
+                    var newWorkingDir = new CmdWorkingDir(workingDir: "", isChecked: false);
+                    TreeViewModel.AddItemAtFocusedItem(newWorkingDir);
+                    TreeViewModel.SelectItemCommand.SafeExecute(newWorkingDir);
                 }, canExecute: _ => HasStartupProject());
 
             AddGroupCommand = new RelayCommand(
@@ -462,7 +471,9 @@ namespace SmartCmdArgs.ViewModel
             CmdBase result = null;
             foreach (var item in list)
             {
-                if (item.Items == null)
+                if (item.WorkingDir != null)
+                    result = new CmdWorkingDir(item.Id, item.WorkingDir, item.Enabled);
+                else if (item.Items == null)
                     result = new CmdArgument(item.Id, item.Command, item.Enabled);
                 else
                     result = new CmdGroup(item.Id, item.Command, ListEntriesToCmdObjects(item.Items), item.Expanded, item.ExclusiveMode, item.ProjectConfig, item.LaunchProfile);

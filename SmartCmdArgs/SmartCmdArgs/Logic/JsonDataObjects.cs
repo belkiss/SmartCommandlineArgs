@@ -15,7 +15,7 @@ namespace SmartCmdArgs.Logic
         public HashSet<Guid> SelectedItems = new HashSet<Guid>();
         public HashSet<Guid> CheckedArguments = new HashSet<Guid>();
         public HashSet<Guid> ExpandedContainer = new HashSet<Guid>();
-        
+
         public Dictionary<Guid, ProjectDataJson> ProjectArguments = new Dictionary<Guid, ProjectDataJson>();
     }
 
@@ -44,6 +44,8 @@ namespace SmartCmdArgs.Logic
         public Guid Id = Guid.NewGuid();
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string Command = null;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public string WorkingDir = null;
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string ProjectConfig = null;
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]

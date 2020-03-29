@@ -4,7 +4,7 @@ using SmartCmdArgs.ViewModel;
 
 namespace SmartCmdArgs.View.Converter
 {
-	class ItemVisibilityConverter : ConverterBase
+    class ItemVisibilityConverter : ConverterBase
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

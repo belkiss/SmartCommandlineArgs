@@ -14,10 +14,10 @@ using Task = System.Threading.Tasks.Task;
 
 namespace SmartCmdArgs
 {
-	/// <summary>
-	/// Command handler
-	/// </summary>
-	internal sealed class Commands
+    /// <summary>
+    /// Command handler
+    /// </summary>
+    internal sealed class Commands
     {
         /// <summary>
         /// VS Package that provides this command, not null.
@@ -55,6 +55,7 @@ namespace SmartCmdArgs
                 AddCommandToService(commandService, PackageGuids.guidVSMenuCmdSet, PackageIds.ToolWindowCommandId, this.ShowToolWindow);
 
                 AddCommandToService(commandService, PackageGuids.guidCmdArgsToolBarCmdSet, PackageIds.ToolbarAddCommandId, package.ToolWindowViewModel.AddEntryCommand);
+                AddCommandToService(commandService, PackageGuids.guidCmdArgsToolBarCmdSet, PackageIds.ToolbarAddWorkingDirCommandId, package.ToolWindowViewModel.AddWorkingDirCommand);
                 AddCommandToService(commandService, PackageGuids.guidCmdArgsToolBarCmdSet, PackageIds.ToolbarAddGroupCommandId, package.ToolWindowViewModel.AddGroupCommand);
                 AddCommandToService(commandService, PackageGuids.guidCmdArgsToolBarCmdSet, PackageIds.ToolbarRemoveCommandId, package.ToolWindowViewModel.RemoveEntriesCommand);
                 AddCommandToService(commandService, PackageGuids.guidCmdArgsToolBarCmdSet, PackageIds.ToolbarMoveUpCommandId, package.ToolWindowViewModel.MoveEntriesUpCommand);

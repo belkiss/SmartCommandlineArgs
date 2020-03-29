@@ -13,6 +13,8 @@ namespace SmartCmdArgs.Helper
             public delegate void GetAllArgumentsDelegate(EnvDTE.Project project, List<string> allArgs);
             public SetArgumentsDelegate SetArguments;
             public GetAllArgumentsDelegate GetAllArguments;
+            public SetArgumentsDelegate SetWorkingDirectory;
+            public GetAllArgumentsDelegate GetAllWorkingDirectories;
         }
 
         private static void SetSingleConfigArgument(EnvDTE.Project project, string arguments, string propertyName)
@@ -67,7 +69,7 @@ namespace SmartCmdArgs.Helper
             }
         }
 
-        private static void SetVCProjEngineArguments(EnvDTE.Project project, string arguments)
+        private static void SetVCProjEngineArguments(EnvDTE.Project project, string arguments, string localKey, string remoteKey)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
@@ -89,21 +91,21 @@ namespace SmartCmdArgs.Helper
                 dynamic windowsLocalDebugger = vcCfg.Rules.Item("WindowsLocalDebugger"); // is IVCRulePropertyStorage
                 if (windowsLocalDebugger != null)
                 {
-                    windowsLocalDebugger.SetPropertyValue("LocalDebuggerCommandArguments", arguments);
+                    windowsLocalDebugger.SetPropertyValue(localKey, arguments);
                 }
                 else { Logger.Warn("SetVCProjEngineArguments: ProjectConfig Rule 'WindowsLocalDebugger' returned null"); }
 
                 dynamic windowsRemoteDebugger = vcCfg.Rules.Item("WindowsRemoteDebugger"); // is IVCRulePropertyStorage
                 if (windowsRemoteDebugger != null)
                 {
-                    windowsRemoteDebugger.SetPropertyValue("RemoteDebuggerCommandArguments", arguments);
+                    windowsRemoteDebugger.SetPropertyValue(remoteKey, arguments);
                 }
                 else { Logger.Warn("SetVCProjEngineArguments: ProjectConfig Rule 'RemoteDebuggerCommandArguments' returned null"); }
             }
             else { Logger.Warn("SetVCProjEngineArguments: VCProject?.ActiveConfiguration? returned null"); }
         }
 
-        private static void GetVCProjEngineAllArguments(EnvDTE.Project project, List<string> allArgs)
+        private static void GetVCProjEngineAllArguments(EnvDTE.Project project, List<string> allArgs, string localKey, string remoteKey)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
@@ -115,7 +117,7 @@ namespace SmartCmdArgs.Helper
                 Logger.Warn("GetVCProjEngineAllArguments: VCProject.Configurations is null");
                 return;
             }
-            
+
             for (int index = 1; index <= configs.Count; index++)
             {
                 dynamic cfg = configs.Item(index); // is VCConfiguration
@@ -130,7 +132,7 @@ namespace SmartCmdArgs.Helper
                 dynamic windowsLocalDebugger = cfg.Rules.Item("WindowsLocalDebugger"); // is IVCRulePropertyStorage
                 if (windowsLocalDebugger != null)
                 {
-                    var localArguments = windowsLocalDebugger.GetUnevaluatedPropertyValue("LocalDebuggerCommandArguments");
+                    var localArguments = windowsLocalDebugger.GetUnevaluatedPropertyValue(localKey);
                     if (!string.IsNullOrEmpty(localArguments))
                     {
                         allArgs.Add(localArguments);
@@ -142,7 +144,7 @@ namespace SmartCmdArgs.Helper
                 dynamic windowsRemoteDebugger = cfg.Rules.Item("WindowsRemoteDebugger"); // is IVCRulePropertyStorage
                 if (windowsRemoteDebugger != null)
                 {
-                    var remoteArguments = windowsRemoteDebugger.GetUnevaluatedPropertyValue("RemoteDebuggerCommandArguments");
+                    var remoteArguments = windowsRemoteDebugger.GetUnevaluatedPropertyValue(remoteKey);
                     if (!string.IsNullOrEmpty(remoteArguments))
                     {
                         allArgs.Add(remoteArguments);
@@ -171,7 +173,9 @@ namespace SmartCmdArgs.Helper
             // C#
             {ProjectKinds.CS, new ProjectArgumentsHandlers() {
                 SetArguments = (project, arguments) => SetMultiConfigArguments(project, arguments, "StartArguments"),
-                GetAllArguments = (project, allArgs) => GetMultiConfigAllArguments(project, allArgs, "StartArguments")
+                GetAllArguments = (project, allArgs) => GetMultiConfigAllArguments(project, allArgs, "StartArguments"),
+                SetWorkingDirectory = (project, workingDir) => SetMultiConfigArguments(project, workingDir, "StartWorkingDirectory"),
+                GetAllWorkingDirectories = (project, workingDir) => GetMultiConfigAllArguments(project, workingDir, "StartWorkingDirectory"),
             } },
             // VB.NET
             {ProjectKinds.VB, new ProjectArgumentsHandlers() {
@@ -180,8 +184,10 @@ namespace SmartCmdArgs.Helper
             } },
             // C/C++
             {ProjectKinds.CPP, new ProjectArgumentsHandlers() {
-                SetArguments = (project, arguments) => SetVCProjEngineArguments(project, arguments),
-                GetAllArguments = (project, allArgs) => GetVCProjEngineAllArguments(project, allArgs)
+                SetArguments = (project, arguments) => SetVCProjEngineArguments(project, arguments, "LocalDebuggerCommandArguments", "RemoteDebuggerCommandArguments"),
+                GetAllArguments = (project, allArgs) => GetVCProjEngineAllArguments(project, allArgs, "LocalDebuggerCommandArguments", "RemoteDebuggerCommandArguments"),
+                SetWorkingDirectory = (project, workingDir) => SetVCProjEngineArguments(project, workingDir, "LocalDebuggerWorkingDirectory", "RemoteDebuggerWorkingDirectory"),
+                GetAllWorkingDirectories = (project, workingDir) => GetVCProjEngineAllArguments(project, workingDir, "LocalDebuggerWorkingDirectory", "RemoteDebuggerWorkingDirectory"),
             } },
             // Python
             {ProjectKinds.Py, new ProjectArgumentsHandlers() {
@@ -193,7 +199,7 @@ namespace SmartCmdArgs.Helper
                 SetArguments = (project, arguments) => SetSingleConfigArgument(project, arguments, "ScriptArguments"),
                 GetAllArguments = (project, allArgs) => GetSingleConfigAllArguments(project, allArgs, "ScriptArguments")
             } },
-            // C# - Lagacy DotNetCore
+            // C# - Legacy DotNetCore
             {ProjectKinds.CSCore, new ProjectArgumentsHandlers() {
                 SetArguments = (project, arguments) => SetCpsProjectArguments(project, arguments),
                 GetAllArguments = (project, allArgs) => GetCpsProjectAllArguments(project, allArgs)
@@ -238,6 +244,22 @@ namespace SmartCmdArgs.Helper
             }
         }
 
+        public static void AddAllWorkingDirectories(IVsHierarchy project, List<string> allWorkingDirs)
+        {
+            if (project.IsCpsProject())
+            {
+                Logger.Error("Working dir support not implemented for Cps projects.");
+            }
+            else
+            {
+                ProjectArgumentsHandlers handler;
+                if (supportedProjects.TryGetValue(project.GetKind(), out handler))
+                {
+                    handler.GetAllWorkingDirectories(project.GetProject(), allWorkingDirs);
+                }
+            }
+        }
+
         public static void SetArguments(IVsHierarchy project, string arguments)
         {
             if (project.IsCpsProject())
@@ -251,6 +273,22 @@ namespace SmartCmdArgs.Helper
                 if (supportedProjects.TryGetValue(project.GetKind(), out handler))
                 {
                     handler.SetArguments(project.GetProject(), arguments);
+                }
+            }
+        }
+
+        public static void SetWorkingDirectory(IVsHierarchy project, string arguments)
+        {
+            if (project.IsCpsProject())
+            {
+                Logger.Error("Working dir support not implemented for Cps projects.");
+            }
+            else
+            {
+                ProjectArgumentsHandlers handler;
+                if (supportedProjects.TryGetValue(project.GetKind(), out handler))
+                {
+                    handler.SetWorkingDirectory(project.GetProject(), arguments);
                 }
             }
         }
@@ -271,6 +309,6 @@ namespace SmartCmdArgs.Helper
         /// see: https://github.com/dotnet/project-system/issues/1821
         /// </summary>
         public static readonly Guid CSCore = Guid.Parse("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}");
-        
+
     }
 }

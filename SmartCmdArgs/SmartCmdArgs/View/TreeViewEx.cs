@@ -852,7 +852,7 @@ namespace SmartCmdArgs.View
                              // Remove selection of other items
                             ParentTreeView.SelectItemExclusively(this);
 
-                            if (Item is CmdArgument)
+                            if (Item is CmdArgument || Item is CmdWorkingDir)
                             {
                                 if (shouldEnterEditMode)
                                 {

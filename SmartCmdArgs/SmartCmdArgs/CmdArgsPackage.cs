@@ -238,6 +238,10 @@ namespace SmartCmdArgs
                 return;
 
             ProjectArguments.SetArguments(project, commandLineArgs);
+            var workingDir = GetWorkingDirForProject(project);
+            if (workingDir != null)
+                ProjectArguments.SetWorkingDirectory(project, workingDir);
+
             Logger.Info($"Updated Configuration for Project: {project.GetName()}");
         }
 
@@ -278,6 +282,48 @@ namespace SmartCmdArgs
         public string CreateCommandLineArgsForProject(Guid guid)
         {
             return CreateCommandLineArgsForProject(vsHelper.HierarchyForProjectGuid(guid));
+        }
+
+        private string GetWorkingDirForProject(IVsHierarchy project)
+        {
+            if (project == null)
+                return null;
+
+            IEnumerable<CmdWorkingDir> checkedWorkingDirs = ToolWindowViewModel.TreeViewModel.Projects.GetValueOrDefault(project.GetGuid())?.CheckedWorkingDirs;
+            if (checkedWorkingDirs == null)
+                return null;
+
+            string projConfig = project.GetProject()?.ConfigurationManager?.ActiveConfiguration?.ConfigurationName;
+            if (projConfig != null)
+                checkedWorkingDirs = checkedWorkingDirs.Where(x => { var conf = x.UsedProjectConfig; return conf == null || conf == projConfig; });
+
+            if (project.IsCpsProject())
+            {
+                var activeLaunchProfile = SmartCmdArgs15.CpsProjectSupport.GetActiveLaunchProfileName(project.GetProject());
+                if (activeLaunchProfile != null)
+                    checkedWorkingDirs = checkedWorkingDirs.Where(x => { var prof = x.UsedLaunchProfile; return prof == null || prof == activeLaunchProfile; });
+            }
+
+            IEnumerable<string> enabledEntries;
+            if (IsMacroEvaluationEnabled)
+            {
+                enabledEntries = checkedWorkingDirs.Select(
+                    e => msBuildPropertyRegex.Replace(e.Value,
+                        match => vsHelper.GetMSBuildPropertyValueForActiveConfig(project, match.Groups["propertyName"].Value) ?? match.Value));
+            }
+            else
+            {
+                enabledEntries = checkedWorkingDirs.Select(e => e.Value);
+            }
+
+            var list = enabledEntries.ToList();
+            if (list.Count != 1)
+            {
+                Logger.Error("More than one working directory selected, fallback to default.");
+                return null;
+            }
+
+            return list.First();
         }
 
         public List<string> GetProjectConfigurations(Guid projGuid)
@@ -470,6 +516,9 @@ namespace SmartCmdArgs
                 projectData.Items.AddRange(
                     ReadCommandlineArgumentsFromProject(project)
                         .Select(cmdLineArg => new CmdArgumentJson { Command = cmdLineArg }));
+                projectData.Items.AddRange(
+                    ReadWorkingDirectoriesFromProject(project)
+                        .Select(workingDir => new CmdArgumentJson { WorkingDir = workingDir }));
             }
 
             // push projectData to the ViewModel
@@ -610,6 +659,13 @@ namespace SmartCmdArgs
             List<string> prjCmdArgs = new List<string>();
             Helper.ProjectArguments.AddAllArguments(project, prjCmdArgs);
             return prjCmdArgs.Where(arg => !string.IsNullOrWhiteSpace(arg)).Distinct();
+        }
+
+        private IEnumerable<string> ReadWorkingDirectoriesFromProject(IVsHierarchy project)
+        {
+            List<string> prjWorkingDirs = new List<string>();
+            Helper.ProjectArguments.AddAllWorkingDirectories(project, prjWorkingDirs);
+            return prjWorkingDirs.Where(arg => !string.IsNullOrWhiteSpace(arg)).Distinct();
         }
 
         private void UpdateCurrentStartupProject()

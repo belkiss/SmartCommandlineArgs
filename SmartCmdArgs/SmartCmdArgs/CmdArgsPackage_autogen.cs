@@ -37,12 +37,13 @@ namespace SmartCmdArgs
     {
         public const int ToolWindowCommandId = 0x0100;
         public const int ToolbarAddCommandId = 0x1100;
-        public const int ToolbarRemoveCommandId = 0x1101;
-        public const int ToolbarMoveUpCommandId = 0x1102;
-        public const int ToolbarMoveDownCommandId = 0x1103;
-        public const int ToolbarCopyCommandlineCommandId = 0x1104;
-        public const int ToolbarAddGroupCommandId = 0x1105;
-        public const int ToolbarShowAllProjectsCommandId = 0x1106;
+        public const int ToolbarAddWorkingDirCommandId = 0x1101;
+        public const int ToolbarRemoveCommandId = 0x1102;
+        public const int ToolbarMoveUpCommandId = 0x1103;
+        public const int ToolbarMoveDownCommandId = 0x1104;
+        public const int ToolbarCopyCommandlineCommandId = 0x1105;
+        public const int ToolbarAddGroupCommandId = 0x1106;
+        public const int ToolbarShowAllProjectsCommandId = 0x1107;
         public const int TWToolbar = 0x1000;
         public const int TWToolbarGroupAddRemove = 0x1050;
         public const int TWToolbarGroupMove = 0x1051;

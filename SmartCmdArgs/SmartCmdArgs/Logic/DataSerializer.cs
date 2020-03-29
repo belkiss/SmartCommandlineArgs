@@ -13,7 +13,6 @@ namespace SmartCmdArgs.Logic
                 var newElement = new CmdArgumentJson
                 {
                     Id = item.Id,
-                    Command = item.Value,
                     ProjectConfig = item.ProjectConfig,
                     LaunchProfile = item.LaunchProfile,
 
@@ -23,12 +22,21 @@ namespace SmartCmdArgs.Logic
 
                 if (item is CmdArgument arg)
                 {
+                    newElement.Command = item.Value;
+
                     // not in JSON
                     newElement.Enabled = item.IsChecked ?? false;
                 }
 
+                if (item is CmdWorkingDir workingDir)
+                {
+                    newElement.WorkingDir = item.Value;
+                }
+
                 if (item is CmdContainer container)
                 {
+                    newElement.Command = item.Value; // LCTODO: the Command field is probably useless for containers, check if that is really the case
+
                     newElement.Items = TransformCmdList(container.Items);
                     newElement.ExclusiveMode = container.ExclusiveMode;
 

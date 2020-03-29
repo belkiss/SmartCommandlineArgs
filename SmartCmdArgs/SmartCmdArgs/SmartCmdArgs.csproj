@@ -94,7 +94,12 @@
     <Compile Include="ToolWindow.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="Helper\BindingListEx.cs" />
-    <Compile Include="ViewModel\CmdArgItem.cs" />
+    <Compile Include="ViewModel\CmdBase.cs" />
+    <Compile Include="ViewModel\CmdArgument.cs" />
+    <Compile Include="ViewModel\CmdContainer.cs" />
+    <Compile Include="ViewModel\CmdGroup.cs" />
+    <Compile Include="ViewModel\CmdProject.cs" />
+    <Compile Include="ViewModel\CmdWorkingDir.cs" />
     <Compile Include="ViewModel\DataObjectGenerator.cs" />
     <Compile Include="ViewModel\ToolWindowHistory.cs" />
     <Compile Include="ViewModel\TreeEvents.cs" />

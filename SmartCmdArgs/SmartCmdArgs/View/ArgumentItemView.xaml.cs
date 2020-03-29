@@ -10,10 +10,10 @@ using SmartCmdArgs.ViewModel;
 
 namespace SmartCmdArgs.View
 {
-	/// <summary>
-	/// Interaction logic for ArgumentItemView.xaml
-	/// </summary>
-	public partial class ArgumentItemView : UserControl
+    /// <summary>
+    /// Interaction logic for ArgumentItemView.xaml
+    /// </summary>
+    public partial class ArgumentItemView : UserControl
     {
         private CmdBase Item => (CmdBase)DataContext;
 
@@ -50,6 +50,16 @@ namespace SmartCmdArgs.View
                         Source = con,
                         Path = new PropertyPath(nameof(CmdContainer.IsExpanded))
                     });
+                    Icon.SetBinding(CrispImage.MonikerProperty, bind);
+                }
+                else if (e.NewValue is CmdWorkingDir workingDir)
+                {
+                    MultiBinding bind = new MultiBinding
+                    {
+                        Mode = BindingMode.OneWay,
+                        Converter = new ItemMonikerConverter()
+                    };
+                    bind.Bindings.Add(new Binding { Source = workingDir });
                     Icon.SetBinding(CrispImage.MonikerProperty, bind);
                 }
             }
@@ -151,7 +161,7 @@ namespace SmartCmdArgs.View
             // get point to scroll to relative to the TreeViewItem to include the indent
             var treeViewItem = TreeHelper.FindAncestorOrSelf<TreeViewItemEx>(this);
             var point = textbox.TranslatePoint(rect.TopLeft, treeViewItem);
-            
+
             var sv = TreeHelper.FindAncestorOrSelf<ScrollViewer>(treeViewItem);
 
             // if the scroll offset to large, so the point we havt to make visible is left off screen we scroll left
