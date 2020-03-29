@@ -40,12 +40,15 @@ namespace SmartCmdArgs
             get { return (CmdArgsPackage)base.Package; }
         }
 
-        public ToolWindow(ViewModel.ToolWindowViewModel viewModel)
+        public ToolWindow(CmdArgsPackage package, ViewModel.ToolWindowViewModel viewModel)
             : base(null)
         {
+            if (package == null)
+                throw new ArgumentNullException(nameof(package));
             if (viewModel == null)
                 throw new ArgumentNullException(nameof(viewModel));
 
+            base.Package = package;
             this.Caption = "Command Line Arguments";
 
             // This is the user control hosted by the tool window; Note that, even if this class implements IDisposable,
