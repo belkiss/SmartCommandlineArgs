@@ -19,31 +19,6 @@ namespace SmartCmdArgs
 	/// </summary>
 	internal sealed class Commands
     {
-
-        /// <summary>
-        /// Command menu group (command set GUID).
-        /// </summary>
-        public static readonly Guid VSMenuCmdSet = new Guid("C5334667-5DDA-4F4A-BC24-6E0084DC5068");
-
-        public const int ToolWindowCommandId = 0x0100;
-
-
-        public static readonly Guid CmdArgsToolBarCmdSet = new Guid("53D59879-7413-491E-988C-938117B773E3");
-
-        public const int TWToolbar = 0x1000;
-        public const int TWToolbarGroup = 0x1050;
-        public const int ToolbarAddCommandId = 0x1100;
-        public const int ToolbarRemoveCommandId = 0x1101;
-        public const int ToolbarMoveUpCommandId = 0x1102;
-        public const int ToolbarMoveDownCommandId = 0x1103;
-        public const int ToolbarCopyCommandlineCommandId = 0x1104;
-        public const int ToolbarAddGroupCommandId = 0x1105;
-        public const int ToolbarShowAllProjectsCommandId = 0x1106;
-
-        public static readonly Guid KeyBindingsCmdSet = new Guid("886F463E-7F96-4BA4-BA88-F36D63044A00");
-
-        public const int KeyBindingAddCmdId = 0x1200;
-
         /// <summary>
         /// VS Package that provides this command, not null.
         /// </summary>
@@ -57,7 +32,7 @@ namespace SmartCmdArgs
         {
             if (package == null)
                 throw new ArgumentNullException(nameof(package));
-            
+
             var cmdService = await package.GetServiceAsync<IMenuCommandService, OleMenuCommandService>();
 
             // AddCommand needs to be run on main thread!
@@ -77,16 +52,16 @@ namespace SmartCmdArgs
 
             if (commandService != null)
             {
-                AddCommandToService(commandService, VSMenuCmdSet, ToolWindowCommandId, this.ShowToolWindow);
+                AddCommandToService(commandService, PackageGuids.guidVSMenuCmdSet, PackageIds.ToolWindowCommandId, this.ShowToolWindow);
 
-                AddCommandToService(commandService, CmdArgsToolBarCmdSet, ToolbarAddCommandId, package.ToolWindowViewModel.AddEntryCommand);
-                AddCommandToService(commandService, CmdArgsToolBarCmdSet, ToolbarAddGroupCommandId, package.ToolWindowViewModel.AddGroupCommand);
-                AddCommandToService(commandService, CmdArgsToolBarCmdSet, ToolbarRemoveCommandId, package.ToolWindowViewModel.RemoveEntriesCommand);
-                AddCommandToService(commandService, CmdArgsToolBarCmdSet, ToolbarMoveUpCommandId, package.ToolWindowViewModel.MoveEntriesUpCommand);
-                AddCommandToService(commandService, CmdArgsToolBarCmdSet, ToolbarMoveDownCommandId, package.ToolWindowViewModel.MoveEntriesDownCommand);
-                AddCommandToService(commandService, CmdArgsToolBarCmdSet, ToolbarCopyCommandlineCommandId, package.ToolWindowViewModel.CopyCommandlineCommand);
+                AddCommandToService(commandService, PackageGuids.guidCmdArgsToolBarCmdSet, PackageIds.ToolbarAddCommandId, package.ToolWindowViewModel.AddEntryCommand);
+                AddCommandToService(commandService, PackageGuids.guidCmdArgsToolBarCmdSet, PackageIds.ToolbarAddGroupCommandId, package.ToolWindowViewModel.AddGroupCommand);
+                AddCommandToService(commandService, PackageGuids.guidCmdArgsToolBarCmdSet, PackageIds.ToolbarRemoveCommandId, package.ToolWindowViewModel.RemoveEntriesCommand);
+                AddCommandToService(commandService, PackageGuids.guidCmdArgsToolBarCmdSet, PackageIds.ToolbarMoveUpCommandId, package.ToolWindowViewModel.MoveEntriesUpCommand);
+                AddCommandToService(commandService, PackageGuids.guidCmdArgsToolBarCmdSet, PackageIds.ToolbarMoveDownCommandId, package.ToolWindowViewModel.MoveEntriesDownCommand);
+                AddCommandToService(commandService, PackageGuids.guidCmdArgsToolBarCmdSet, PackageIds.ToolbarCopyCommandlineCommandId, package.ToolWindowViewModel.CopyCommandlineCommand);
 
-                AddToggleCommandToService(commandService, CmdArgsToolBarCmdSet, ToolbarShowAllProjectsCommandId, 
+                AddToggleCommandToService(commandService, PackageGuids.guidCmdArgsToolBarCmdSet, PackageIds.ToolbarShowAllProjectsCommandId,
                     package.ToolWindowViewModel.ShowAllProjectsCommand, () => package.ToolWindowViewModel.TreeViewModel.ShowAllProjects);
             }
         }
@@ -159,7 +134,7 @@ namespace SmartCmdArgs
             }
 
             IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
-            windowFrame.SetProperty((int)__VSFPROPID.VSFPROPID_CmdUIGuid, ToolWindow.ToolWindowGuidString);
+            windowFrame.SetProperty((int)__VSFPROPID.VSFPROPID_CmdUIGuid, PackageGuids.guidToolWindowString);
             Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());
         }
     }

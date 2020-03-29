@@ -63,6 +63,11 @@
     <Compile Include="CmdArgsOptionPage.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="CmdArgsPackage_autogen.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CmdArgsPackage.vsct</DependentUpon>
+    </Compile>
     <Compile Include="Helper\DelayExecution.cs" />
     <Compile Include="Helper\Extensions.cs" />
     <Compile Include="Helper\FileSystemWatcherDisabledContext.cs" />
@@ -81,6 +86,11 @@
     <Compile Include="Logic\SolutionDataSerializer.cs" />
     <Compile Include="Logic\SuoDataSerializer.cs" />
     <Compile Include="Logic\JsonDataObjects.cs" />
+    <Compile Include="source.extension.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>source.extension.vsixmanifest</DependentUpon>
+    </Compile>
     <Compile Include="ToolWindow.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="Helper\BindingListEx.cs" />
@@ -123,6 +133,8 @@
     <None Include="Key.snk" />
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
+      <Generator>VsixManifestGenerator</Generator>
+      <LastGenOutput>source.extension.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +175,8 @@
     <VSCTCompile Include="CmdArgsPackage.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
       <SubType>Designer</SubType>
+      <Generator>VsctGenerator</Generator>
+      <LastGenOutput>CmdArgsPackage_autogen.cs</LastGenOutput>
     </VSCTCompile>
   </ItemGroup>
   <ItemGroup>

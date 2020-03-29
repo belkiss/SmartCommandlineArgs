@@ -25,11 +25,9 @@ namespace SmartCmdArgs
     /// implementation of the IVsUIElementPane interface.
     /// </para>
     /// </remarks>
-    [Guid(ToolWindow.ToolWindowGuidString)]
+    [Guid(PackageGuids.guidToolWindowString)]
     public class ToolWindow : ToolWindowPane, IVsWindowFrameNotify3, IVsWindowPaneCommit, IVsWindowPaneCommitFilter
     {
-        public const string ToolWindowGuidString = "a21b35ed-5c13-4d55-a3d2-71054c4e9540";
-
         private View.ToolWindowControl view;
 
         private List<IVsWindowSearchOption> searchOptions;
@@ -63,7 +61,7 @@ namespace SmartCmdArgs
             // The index is actually zero-based, in contrast to the bitmaps in the vsct-file.
             BitmapIndex = 0;
 
-            this.ToolBar = new CommandID(Commands.CmdArgsToolBarCmdSet, Commands.TWToolbar);
+            this.ToolBar = new CommandID(PackageGuids.guidCmdArgsToolBarCmdSet, PackageIds.TWToolbar);
 
             matchCaseSearchOption = new WindowSearchBooleanOption("Match Case", "Enable to make search case sensitive.", false);
             searchOptions = new List<IVsWindowSearchOption> {matchCaseSearchOption};
@@ -156,8 +154,8 @@ namespace SmartCmdArgs
             {
                 _toolWindow.Package.ToolWindowViewModel.TreeViewModel.SetStringFilter(SearchQuery.SearchString, _toolWindow.matchCaseSearchOption.Value);
 
-                // Call the implementation of this method in the base class.   
-                // This sets the task status to complete and reports task completion.   
+                // Call the implementation of this method in the base class.
+                // This sets the task status to complete and reports task completion.
                 base.OnStartSearch();
             }
 

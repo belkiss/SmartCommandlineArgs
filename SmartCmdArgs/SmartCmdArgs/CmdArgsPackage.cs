@@ -44,21 +44,20 @@ namespace SmartCmdArgs
     /// </para>
     /// </remarks>
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-    [InstalledProductRegistration("#110", "#112", "2.2.0", IconResourceID = 400)] // Info on this package for Help/About
+    [InstalledProductRegistration("#110", "#112", Vsix.Version, IconResourceID = 400)] // Info on this package for Help/About
     [ProvideMenuResource("Menus.ctmenu", 1)]
-    [ProvideToolWindow(typeof(ToolWindow), Window = ToolWindow.ToolWindowGuidString)]
-    [ProvideOptionPage(typeof(CmdArgsOptionPage), "Smart Command Line Arguments", "General", 1000, 1001, false)]
+    [ProvideToolWindow(typeof(ToolWindow), Window = PackageGuids.guidToolWindowString)]
+    [ProvideOptionPage(typeof(CmdArgsOptionPage), Vsix.Name, "General", 1000, 1001, false)]
     [ProvideBindingPath]
-    [ProvideKeyBindingTable(ToolWindow.ToolWindowGuidString, 200)]
+    [ProvideKeyBindingTable(PackageGuids.guidToolWindowString, 200)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionExistsAndFullyLoaded_string, PackageAutoLoadFlags.BackgroundLoad)]
-    [Guid(CmdArgsPackage.PackageGuidString)]
+    [Guid(PackageGuids.guidCmdArgsToolWindowPackageString)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
     public sealed class CmdArgsPackage : AsyncPackage
     {
         /// <summary>
         /// CmdArgsPackage GUID string.
         /// </summary>
-        public const string PackageGuidString = "131b0c0a-5dd0-4680-b261-86ab5387b86e";
         public const string DataObjectCmdJsonFormat = "SmartCommandlineArgs_D11D715E-CBF3-43F2-A1C1-168FD5C48505";
         public const string DataObjectCmdListFormat = "SmartCommandlineArgs_35AD7E71-E0BC-4440-97D9-2E6DA3085BE4";
         public const string SolutionOptionKey = "SmartCommandlineArgsVA"; // Only letters are allowed
